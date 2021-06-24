@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getAddress } from "@ethersproject/address";
-import { getTopPairs } from "../utils";
-import { return200, return500 } from "../utils/response";
+import { getTopPairs } from "../../utils";
+import { return200, return500 } from "../../utils/response";
 
 interface ReturnShape {
   [tokenIds: string]: {
@@ -20,6 +20,7 @@ export default async function (req: VercelRequest, res: VercelResponse): Promise
     const pairs = topPairs.reduce<ReturnShape>((accumulator, pair): ReturnShape => {
       const t0Id = getAddress(pair.token0.id);
       const t1Id = getAddress(pair.token1.id);
+
       if (parseFloat(pair.reserveUSD) > 1000) {
         accumulator[`${t0Id}_${t1Id}`] = {
           price: pair.price,
